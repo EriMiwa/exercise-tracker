@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import {saveExercise} from '../services/exerciseService'
+import {getUsers} from '../services/userService'
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -23,7 +24,7 @@ export default class CreateExercise extends Component {
   }
 
   componentDidMount() {
-    axios.get('https://exercise-me-node.herokuapp.com/users')
+    getUsers()
       .then(response => {
         if (response.data.length > 0) {
           this.setState({
@@ -70,7 +71,7 @@ export default class CreateExercise extends Component {
 
     console.log(exercise);
 
-    axios.post('https://exercise-me-node.herokuapp.com/exercises/add', exercise)
+    saveExercise(exercise)
       .then(res => console.log(res.data))
       .catch(error => console.log(error))
     this.setState({

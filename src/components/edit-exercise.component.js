@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { getUsers } from '../services/userService';
+import {getExercise, editExercise} from '../services/exerciseService';
 
 export default class EditExercise extends Component {
   constructor(props) {
@@ -23,7 +24,7 @@ export default class EditExercise extends Component {
   }
 
   componentDidMount() {
-    axios.get('https://exercise-me-node.herokuapp.com/exercises/' + this.props.match.params.id)
+    getExercise(this.props.match.params.id)
       .then(response => {
         this.setState({
           username: response.data.username,
@@ -34,7 +35,7 @@ export default class EditExercise extends Component {
       })
       .catch(error => console.log(error))
 
-    axios.get('https://exercise-me-node.herokuapp.com/users/')
+    getUsers()
       .then(response => {
         if (response.data.length > 0) {
           this.setState({
@@ -81,7 +82,7 @@ export default class EditExercise extends Component {
 
     console.log(exercise);
 
-    axios.post('https://exercise-me-node.herokuapp.com/exercises/update/' + this.props.match.params.id, exercise)
+    editExercise(this.props.match.params.id, exercise)
     .then(res => console.log(res.data))
     .catch(error => console.log(error))
 

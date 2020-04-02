@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { deleteExercise } from '../services/exerciseService';
+import { getExercises } from '../services/exerciseService'
 
 const Exercise = props => (
   <tr>
@@ -9,7 +10,7 @@ const Exercise = props => (
     <td>{props.exercise.duration}</td>
     <td>{props.exercise.date.substring(0.10)}</td>
     <td>
-      <Link to={"/edit/" + props.exercise._id}>edit</Link> | <a href="#" onClick={() => {props.deleteExercise(props.exercise._id)}}>delete</a>
+      <Link to={"/edit/" + props.exercise._id}>edit</Link> | <a href="#" onClick={() => {props.handleDelete(props.exercise._id)}}>delete</a>
     </td>
   </tr>
 )
@@ -19,7 +20,7 @@ export default class ExerciseList extends Component {
   constructor(props) {
     super(props);
 
-    this.deleteExercise = this.deleteExercise.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
     
     this.state = {
       exercises: []
@@ -27,13 +28,13 @@ export default class ExerciseList extends Component {
   }
 
   componentDidMount() {
-    axios.get('https://exercise-me-node.herokuapp.com/exercises')
+    getExercises()
       .then(response => this.setState({ exercises: response.data}))
       .catch(error => console.log(error))
   }
 
-  deleteExercise(id) {
-    axios.delete('https://exercise-me-node.herokuapp.com/exercises/' + id)
+  handleDelete(id) {
+    deleteExercise(id)
       .then(res => console.log(res.data))
       .catch(error => console.log(error))
     this.setState({
@@ -44,7 +45,7 @@ export default class ExerciseList extends Component {
 
   exerciseList() {
     return this.state.exercises.map( currentExercise => {
-      return <Exercise exercise={currentExercise} deleteExercise={this.deleteExercise} key={currentExercise._id}/>
+      return <Exercise exercise={currentExercise} handleDelete={this.handleDelete} key={currentExercise._id}/>
     })
   }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import * as userService from '../services/userService';
 
 export default class CreateUser extends Component {
   constructor(props) {
@@ -28,7 +28,7 @@ export default class CreateUser extends Component {
 
     console.log(user);
 
-    axios.post('http://exercise-me-node.herokuapp.com/users/add', user)
+    userService.register(user)
       .then(res => console.log(res.data))
       .catch(error => console.log(error))
     this.setState({

@@ -27,18 +27,19 @@ export default class ExerciseList extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:5000/exercises/')
+    axios.get('https://exercise-me-node.herokuapp.com/exercises')
       .then(response => this.setState({ exercises: response.data}))
       .catch(error => console.log(error))
   }
 
   deleteExercise(id) {
-    axios.delete('http://localhost:5000/exercises/' + id)
+    axios.delete('https://exercise-me-node.herokuapp.com/exercises/' + id)
       .then(res => console.log(res.data))
       .catch(error => console.log(error))
     this.setState({
       exercises: this.state.exercises.filter(el => el.id !== id)
     })
+
   }
 
   exerciseList() {
